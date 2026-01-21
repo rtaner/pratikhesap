@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/auth';
-import { Plus, Search, Barcode, Tag, Pencil, Trash2, History, Folder } from 'lucide-react';
+import { Plus, Search, Barcode, Tag, Pencil, Trash2, History, Folder, Upload } from 'lucide-react';
 import Modal from '../components/ui/Modal';
 import StockHistoryModal from '../components/stock/StockHistoryModal';
 import CategorySelect from '../components/stock/CategorySelect';
+import ImportModal from '../components/stock/ImportModal';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 
@@ -17,6 +18,7 @@ export default function Stock() {
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isImportModalOpen, setIsImportModalOpen] = useState(false); // New State
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -190,10 +192,16 @@ export default function Stock() {
                     <h1 className="text-2xl font-bold text-slate-800">Stok Yönetimi</h1>
                     <p className="text-slate-500">Ürün listesi ve stok takibi</p>
                 </div>
-                <Button onClick={() => { resetForm(); setIsModalOpen(true); }} className="gap-2">
-                    <Plus size={20} />
-                    Yeni Ürün
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setIsImportModalOpen(true)} className="gap-2">
+                        <Upload size={20} />
+                        Yedek Yükle
+                    </Button>
+                    <Button onClick={() => { resetForm(); setIsModalOpen(true); }} className="gap-2">
+                        <Plus size={20} />
+                        Yeni Ürün
+                    </Button>
+                </div>
             </div>
 
             {/* Search */}
@@ -435,6 +443,13 @@ export default function Stock() {
                 isOpen={!!historyProduct}
                 onClose={() => setHistoryProduct(null)}
                 product={historyProduct}
+            />
+
+            {/* IMPORT MODAL */}
+            <ImportModal
+                isOpen={isImportModalOpen}
+                onClose={() => setIsImportModalOpen(false)}
+                onSuccess={() => { fetchProducts(); fetchSuppliers(); }}
             />
 
         </div >
