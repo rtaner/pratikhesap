@@ -120,6 +120,11 @@ export default function ImportModal({ isOpen, onClose, onSuccess }) {
             return;
         }
 
+        if (!business) {
+            alert("İşletme bilgileri bulunamadı. Lütfen sayfayı yenileyip tekrar deneyin.");
+            return;
+        }
+
         setStep(3);
         try {
             // 1. Process Suppliers (Create New ones)
