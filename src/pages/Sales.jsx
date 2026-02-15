@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/auth';
-import { Search, ShoppingCart, Trash2, CreditCard, Banknote, Plus, Minus, X, Check, User } from 'lucide-react';
+import { Search, ShoppingCart, Trash2, CreditCard, Banknote, Plus, Minus, X, Check, User, Loader2 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import Modal from '../components/ui/Modal';
@@ -493,27 +493,29 @@ export default function Sales() {
                 <div className="grid grid-cols-3 gap-4 py-4">
                     <button
                         onClick={() => handleCheckout('cash')}
-                        className="flex flex-col items-center justify-center gap-3 p-6 bg-green-50 border-2 border-green-100 rounded-xl hover:border-green-500 hover:shadow-md transition-all group"
+                        disabled={loading}
+                        className={`flex flex-col items-center justify-center gap-3 p-6 bg-green-50 border-2 border-green-100 rounded-xl transition-all group ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:border-green-500 hover:shadow-md'}`}
                     >
-                        <Banknote size={32} className="text-green-600 group-hover:scale-110 transition-transform" />
-                        <span className="font-bold text-green-800">Nakit</span>
+                        {loading ? <Loader2 className="animate-spin text-green-600" size={32} /> : <Banknote size={32} className="text-green-600 group-hover:scale-110 transition-transform" />}
+                        <span className="font-bold text-green-800">{loading ? 'İşleniyor...' : 'Nakit'}</span>
                     </button>
 
                     <button
                         onClick={() => handleCheckout('credit_card')}
-                        className="flex flex-col items-center justify-center gap-3 p-6 bg-purple-50 border-2 border-purple-100 rounded-xl hover:border-purple-500 hover:shadow-md transition-all group"
+                        disabled={loading}
+                        className={`flex flex-col items-center justify-center gap-3 p-6 bg-purple-50 border-2 border-purple-100 rounded-xl transition-all group ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:border-purple-500 hover:shadow-md'}`}
                     >
-                        <CreditCard size={32} className="text-purple-600 group-hover:scale-110 transition-transform" />
-                        <span className="font-bold text-purple-800">Kredi Kartı</span>
+                        {loading ? <Loader2 className="animate-spin text-purple-600" size={32} /> : <CreditCard size={32} className="text-purple-600 group-hover:scale-110 transition-transform" />}
+                        <span className="font-bold text-purple-800">{loading ? 'İşleniyor...' : 'Kredi Kartı'}</span>
                     </button>
 
                     <button
                         onClick={() => handleCheckout('on_account')}
-                        className={`flex flex-col items-center justify-center gap-3 p-6 border-2 rounded-xl transition-all group ${!selectedCustomer ? 'bg-slate-50 border-slate-200 opacity-50 cursor-not-allowed' : 'bg-blue-50 border-blue-100 hover:border-blue-500 hover:shadow-md'}`}
-                        disabled={!selectedCustomer}
+                        className={`flex flex-col items-center justify-center gap-3 p-6 border-2 rounded-xl transition-all group ${(!selectedCustomer || loading) ? 'bg-slate-50 border-slate-200 opacity-50 cursor-not-allowed' : 'bg-blue-50 border-blue-100 hover:border-blue-500 hover:shadow-md'}`}
+                        disabled={!selectedCustomer || loading}
                     >
-                        <User size={32} className={`${!selectedCustomer ? 'text-slate-400' : 'text-blue-600 group-hover:scale-110 transition-transform'}`} />
-                        <span className={`font-bold ${!selectedCustomer ? 'text-slate-400' : 'text-blue-800'}`}>Veresiye</span>
+                        {loading ? <Loader2 className="animate-spin text-blue-600" size={32} /> : <User size={32} className={`${!selectedCustomer ? 'text-slate-400' : 'text-blue-600 group-hover:scale-110 transition-transform'}`} />}
+                        <span className={`font-bold ${!selectedCustomer ? 'text-slate-400' : 'text-blue-800'}`}>{loading ? 'İşleniyor...' : 'Veresiye'}</span>
                     </button>
                 </div>
 
