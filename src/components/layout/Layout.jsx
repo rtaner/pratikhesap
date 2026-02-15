@@ -21,6 +21,38 @@ const Layout = () => {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
+    // Safety check: User is logged in but business data is missing
+    if (!business && !isLoading) {
+        return (
+            <div className="flex h-screen w-full flex-col items-center justify-center bg-slate-50 gap-4 p-4 text-center">
+                <div className="bg-red-100 p-4 rounded-full text-red-600 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                </div>
+                <h1 className="text-xl font-bold text-slate-800">İşletme Bilgileri Yüklenemedi</h1>
+                <p className="text-slate-500 max-w-md">
+                    Kullanıcı oturumunuz açık ancak işletme detaylarına ulaşılamadı.
+                    İnternet bağlantınızı kontrol edip sayfayı yenileyiniz.
+                </p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                    Sayfayı Yenile
+                </button>
+                <button
+                    onClick={() => {
+                        // Hard logout
+                        localStorage.clear();
+                        window.location.href = '/login';
+                    }}
+                    className="text-sm text-slate-400 hover:text-red-500 underline"
+                >
+                    Çıkış Yap ve Tekrar Dene
+                </button>
+            </div>
+        );
+    }
+
     // License Check
     // useAuthStore is already called at top, we need to destructure there.
     const isSuperAdmin = profile?.role === 'super_admin';
