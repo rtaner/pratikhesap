@@ -46,6 +46,12 @@ export default function Suppliers() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!business) {
+            alert("İşletme bilgileri yüklenemedi. Lütfen sayfayı yenileyin.");
+            return;
+        }
+
         try {
             const payload = {
                 business_id: business.id, // RLS handles this but good to be explicit for INSERT
