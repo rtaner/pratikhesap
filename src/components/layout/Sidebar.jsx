@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../../store/auth';
 import { supabase } from '../../lib/supabase';
+import { APP_VERSION } from '../../version';
 
 export default function Sidebar() {
     const { profile, signOut } = useAuthStore();
@@ -49,7 +50,7 @@ export default function Sidebar() {
         { path: '/stock', icon: Package, label: 'Stok Yönetimi', roles: ['admin', 'staff', 'super_admin'] },
         { path: '/purchases', icon: Truck, label: 'Alımlar (Fatura)', roles: ['admin', 'super_admin'] },
         { path: '/customers', icon: Users, label: 'Müşteriler (Cari)', roles: ['admin', 'staff', 'super_admin'] },
-        { path: '/suppliers', icon: Truck, label: 'Tedarikçiler', roles: ['admin', 'super_admin'] }, // Moved Here
+        { path: '/suppliers', icon: Truck, label: 'Tedarikçiler', roles: ['admin', 'super_admin'] },
         { path: '/accounts', icon: Wallet, label: 'Hesaplar & Kasa', roles: ['admin', 'super_admin'] },
         { path: '/expenses', icon: Wallet, label: 'Giderler', roles: ['admin', 'super_admin'] },
         { path: '/reports', icon: FileBarChart, label: 'Raporlar', roles: ['admin', 'super_admin'] },
@@ -110,7 +111,6 @@ export default function Sidebar() {
                 {isAdmin && (
                     <div className="mt-8 pt-4 border-t border-slate-800">
                         <p className="px-4 text-xs font-semibold text-slate-500 mb-2">YÖNETİM</p>
-                        {/* Settings Moved Here */}
                         <NavLink
                             to="/team"
                             className={({ isActive }) =>
@@ -142,11 +142,14 @@ export default function Sidebar() {
             <div className="p-4 border-t border-slate-800">
                 <button
                     onClick={signOut}
-                    className="flex items-center gap-3 w-full px-4 py-3 text-red-400 hover:bg-red-950/30 rounded-lg transition-colors"
+                    className="flex items-center gap-3 w-full px-4 py-3 text-red-400 hover:bg-red-950/30 rounded-lg transition-colors mb-2"
                 >
                     <LogOut size={20} />
                     <span className="font-medium">Çıkış Yap</span>
                 </button>
+                <div className="text-center text-xs text-slate-600 font-mono opacity-50">
+                    v{APP_VERSION}
+                </div>
             </div>
         </aside>
     );
